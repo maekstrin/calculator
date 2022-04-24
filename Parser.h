@@ -10,7 +10,7 @@ struct Parser {
     const char *input;
     std::vector<std::string> tokens = {"+", "-", "^", "*", "/",
                                        "mod", "abs", "sin", "cos", "(", ")",
-                                       "ln", "sqrt", "exp"};
+                                       "ln", "sqrt", "exp", "real", "imag", "mag", "phase", "j"};
 };
 
 std::string parse_token(Parser &parser);
