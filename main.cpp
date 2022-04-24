@@ -9,7 +9,7 @@ void test(const char *input, double expected) {
         p.input = input;
         std::cout << input << std::endl;
         Expression exp = parse(p);
-        double result = eval(exp);
+        std::complex<double> result = eval(exp);
         if (result == expected) return;
         std::cout << input << " = " << expected << " : error, got " << result << '\n';
     }
@@ -54,10 +54,11 @@ void test_exps() {
     test("5 * 4 + 3 * 2 + 1", 27);
 }
 
-double process_input(std::vector<std::string> &inp) {
+std::complex<double> process_input(std::vector<std::string> &inp) {
     Parser p;
     Parser::vars["e"] = "2.718281828";
     Parser::vars["PI"] = "3.1415926535";
+    Parser::vars["j"] = "sqrt(-1)";
     for (int i = 0; i < inp.size(); ++i) {
         if (i != inp.size() - 1) {
             int ind = inp[i].find('=');
@@ -65,12 +66,15 @@ double process_input(std::vector<std::string> &inp) {
             std::string exp_ = inp[i].substr(ind + 2, inp[i].length());
             p.input = exp_.c_str();
             Expression exp = parse(p);
-            double result = eval(exp);
-            Parser::vars[var_] = std::to_string(result);
+            std::complex<double> result = eval(exp);
+//            Parser::vars[var_] = std::to_string(result);
+
+            Parser::vars[var_] = std::to_string(result.real()) + "+" + "i" + std::to_string(result.imag());
+
         } else {
             p.input = inp[i].c_str();
             Expression exp = parse(p);
-            double result = eval(exp);
+            std::complex<double> result = eval(exp);
             return result;
         }
     }
@@ -90,3 +94,4 @@ int main() {
 //    std::reverse(in.begin(), in.end());
     std::cout << process_input(in);
 }
+
