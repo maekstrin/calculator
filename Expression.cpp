@@ -2,13 +2,13 @@
 #include <cmath>
 #include <iostream>
 #include <cassert>
+#include <complex>
 
 
-
-double eval(Expression &e) {
+std::complex<double> eval(Expression &e) {
     if (e.args.size() == 2) {
-        double a = eval(e.args[0]);
-        double b = eval(e.args[1]);
+        std::complex<double> a = eval(e.args[0]);
+        std::complex<double> b = eval(e.args[1]);
         if (e.token == "+") {
             return a + b;
         }
@@ -26,7 +26,7 @@ double eval(Expression &e) {
         }
         std::cout << "Unknown binary operation" << std::endl;
     } else if (e.args.size() == 1) {
-        double a = eval(e.args[0]);
+        std::complex<double> a = eval(e.args[0]);
         if (e.token == "-") {
             return -a;
         }
@@ -43,10 +43,26 @@ double eval(Expression &e) {
             return log(a);
         }
         if (e.token == "sqrt") {
-            return sqrt(a);
+            return (a.real() >= 0 ? sqrt(a) : -sqrt(a));
         }
         if (e.token == "exp") {
             return exp(a);
+        }
+        if (e.token == "real"){
+            return a.real();
+        }
+        if (e.token == "imag"){
+            return a.imag();
+        }
+        if (e.token == "mag"){
+            return abs(a);
+        }
+        if (e.token == "phase"){
+            return arg(a);
+        }
+        if (e.token == "j"){
+            std::complex<double> num(a.imag(), a.real());
+            return num;
         }
         std::cout << "Unknown unary operation" << std::endl;
     } else if (e.args.size() == 0) {
