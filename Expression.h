@@ -2,10 +2,11 @@
 
 #include <string>
 #include <vector>
+#include <complex>
 
 struct Expression {
     std::string token;
     std::vector<Expression> args;
 };
 
-double eval(Expression& e);
+std::complex<double> eval(Expression& e);
