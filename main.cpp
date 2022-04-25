@@ -7,9 +7,10 @@ void test(const char *input, double expected) {
     try {
         Parser p;
         p.input = input;
-        std::cout << input << std::endl;
+//        std::cout << input << std::endl;
         Expression exp = parse(p);
-        std::complex<double> result = eval(exp);
+        std::complex<double> temp_result = eval(exp);
+        double result = round(temp_result.real());
         if (result == expected) return;
         std::cout << input << " = " << expected << " : error, got " << result << '\n';
     }
@@ -19,6 +20,7 @@ void test(const char *input, double expected) {
 }
 
 void test_exps() {
+    test("2^3", 8);
     test("0", 0);
     test("1", 1);
     test("9", 9);
@@ -45,7 +47,6 @@ void test_exps() {
     test("(1+2)*(3+4)", 21);
     test("2*3+4*5", 26);
     test("100+2*10+3", 123);
-    test("2^3", 8);
     test("2^3*5+2", 42);
     test("5*2^3+2", 42);
     test("2+5*2^3", 42);
@@ -82,6 +83,7 @@ std::complex<double> process_input(std::vector<std::string> &inp) {
 
 
 int main() {
+//    test_exps();
     std::string inp;
     std::vector<std::string> in;
     int n;
@@ -92,6 +94,11 @@ int main() {
         in.push_back(inp);
     }
 //    std::reverse(in.begin(), in.end());
-    std::cout << process_input(in);
+    std::complex<double> res = process_input(in);
+    if (res.imag() < 0.000001) {
+        std::cout << res.real();
+    } else {
+        std::cout << res;
+    }
 }
 
